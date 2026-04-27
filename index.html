@@ -1021,7 +1021,19 @@
         let currentCategory = '';
         let currentSubjectIndex = 0;
         let currentImageIndex = 0;
-        const totalImagesPerSubject = 3; // 더미 이미지 개수
+        let currentTotalImages = 3; // 현재 선택된 과목의 총 이미지 수
+        
+        // 과목별 실제 이미지 데이터 매핑
+        const subjectImages = {
+            '해부학': [
+                'https://cdn.jsdelivr.net/gh/sbsweb35-tech/SBS@main/Anatomy/Anatomy1.jpg',
+                'https://cdn.jsdelivr.net/gh/sbsweb35-tech/SBS@main/Anatomy/Anatomy2.jpg',
+                'https://cdn.jsdelivr.net/gh/sbsweb35-tech/SBS@main/Anatomy/Anatomy3.jpg',
+                'https://cdn.jsdelivr.net/gh/sbsweb35-tech/SBS@main/Anatomy/Anatomy4.jpg',
+                'https://cdn.jsdelivr.net/gh/sbsweb35-tech/SBS@main/Anatomy/Anatomy5.jpg',
+                'https://cdn.jsdelivr.net/gh/sbsweb35-tech/SBS@main/Anatomy/Anatomy6.jpg'
+            ]
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
             // ==========================================
@@ -1388,19 +1400,31 @@
         function updateModalView() {
             const display = document.getElementById('current-image-display');
             const subjectName = curriculumData[currentCategory][currentSubjectIndex];
+            const images = subjectImages[subjectName];
             
-            // 더미 이미지 표시 로직
+            // 등록된 이미지가 있으면 해당 길이만큼, 없으면 기본 3장 설정
+            currentTotalImages = images ? images.length : 3;
+            
             display.style.opacity = 0;
             
             setTimeout(() => {
-                display.innerHTML = `
-                    <div class="flex flex-col items-center gap-4">
-                        <span class="text-3xl text-gray-300">🖼️</span>
-                        <span>${subjectName} - 이미지 ${currentImageIndex + 1}</span>
-                    </div>
-                `;
+                if (images && images.length > 0) {
+                    // 실제 이미지가 있는 경우 렌더링
+                    display.innerHTML = `<img src="${images[currentImageIndex]}" alt="${subjectName} 과정 상세 이미지" class="w-full h-full object-contain rounded-2xl">`;
+                    display.classList.remove('bg-gray-100'); // 배경 회색 제거
+                } else {
+                    // 이미지가 없는 경우 더미 렌더링
+                    display.innerHTML = `
+                        <div class="flex flex-col items-center gap-4">
+                            <span class="text-3xl text-gray-300">🖼️</span>
+                            <span>${subjectName} - 준비중 ${currentImageIndex + 1}</span>
+                        </div>
+                    `;
+                    display.classList.add('bg-gray-100');
+                }
+                
                 display.style.opacity = 1;
-                document.getElementById('modal-pagination').textContent = `${currentImageIndex + 1} / ${totalImagesPerSubject}`;
+                document.getElementById('modal-pagination').textContent = `${currentImageIndex + 1} / ${currentTotalImages}`;
             }, 150);
         }
 
@@ -1416,7 +1440,7 @@
         }
 
         window.nextImage = function() {
-            if (currentImageIndex < totalImagesPerSubject - 1) {
+            if (currentImageIndex < currentTotalImages - 1) {
                 currentImageIndex++;
                 updateModalView();
             } else {
