@@ -944,10 +944,10 @@
             </div>
 
             <!-- 모달 바디: 이미지 뷰어 -->
-            <div class="flex-1 relative flex items-center justify-center bg-gray-50/50 p-6 md:p-10 overflow-hidden cursor-pointer" onclick="nextImage()">
-                <!-- 현재 이미지 디스플레이 (첨부 이미지 비율 1.41:1 적용) -->
-                <div class="w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative flex items-center justify-center group aspect-[1.41/1]">
-                    <div id="current-image-display" class="absolute inset-0 transition-opacity duration-300 bg-gray-100 flex items-center justify-center text-gray-400 font-bold tracking-widest text-xl"></div>
+            <div class="flex-1 relative flex items-center justify-center bg-gray-50/50 p-4 md:p-8 overflow-hidden cursor-pointer" onclick="nextImage()">
+                <!-- 현재 이미지 디스플레이 (비율 고정 제거, h-full 적용으로 잘림 방지) -->
+                <div class="w-full h-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative flex items-center justify-center group">
+                    <div id="current-image-display" class="absolute inset-0 transition-opacity duration-300 bg-gray-100 flex items-center justify-center text-gray-400 font-bold tracking-widest text-xl p-2 md:p-4"></div>
                 </div>
             </div>
 
